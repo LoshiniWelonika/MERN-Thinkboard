@@ -10,6 +10,9 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 
+//middleware
+app.use(express.json());
+
 app.use("/api/notes", noteRoutes);
 
 app.listen(5000, () => {
