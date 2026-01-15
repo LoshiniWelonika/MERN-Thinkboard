@@ -3,13 +3,12 @@ import noteRoutes from './routes/notesRoutes.js';
 import { connectDB } from "./config/db.js";
 import dotenv from 'dotenv';
 import rateLimiter from "../middleware/rateLimiter.js";
+import { connect } from "mongoose";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-connectDB();
 
 //middleware
 app.use(express.json()); //This middleware is used to parse JSON bodies of incoming requests
@@ -23,8 +22,12 @@ app.use((req,res,next) => {
 
 app.use("/api/notes", noteRoutes);
 
-app.listen(5000, () => {
-    console.log('Server is running on port', PORT);
-});
+connectDB().then(() => {
+    app.listen(5000, () => {
+        console.log('Server is running on port', PORT);
+    });
+})
+
+
 
 
