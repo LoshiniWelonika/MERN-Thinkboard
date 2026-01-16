@@ -1,9 +1,11 @@
 import express from "express";
-import noteRoutes from './routes/notesRoutes.js';
-import { connectDB } from "./config/db.js";
+import cors from "cors";
 import dotenv from 'dotenv';
+
+import { connectDB } from "./config/db.js";
+import noteRoutes from './routes/notesRoutes.js';
 import rateLimiter from "../middleware/rateLimiter.js";
-import { connect } from "mongoose";
+
 
 dotenv.config();
 
@@ -13,6 +15,9 @@ const PORT = process.env.PORT || 5000;
 //middleware
 app.use(express.json()); //This middleware is used to parse JSON bodies of incoming requests
 app.use(rateLimiter);
+app.use(cors({
+    origin:"http://localhost:5173",
+}));
 
 //custom middleware to log request details
 app.use((req,res,next) => {
